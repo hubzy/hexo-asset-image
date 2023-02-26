@@ -9,7 +9,8 @@ function getPosition(str, m, i) {
 hexo.extend.filter.register('after_post_render', function(data){
   var config = hexo.config;
   if(config.post_asset_folder){
-    var link = data.permalink;
+    // var link = data.permalink;
+    var link = data.path;
     var beginPos = getPosition(link, '/', 3) + 1;
     var appendLink = '';
     // In hexo 3.1.1, the permalink of "about" page is like ".../about/index.html".
@@ -21,9 +22,9 @@ hexo.extend.filter.register('after_post_render', function(data){
       var endPos = link.lastIndexOf('/');
     }
     else {
-      var endPos = link.length-1;
+      var endPos = link.lastIndexOf('.');
     }
-    link = link.substring(beginPos, endPos) + '/' + appendLink;
+    link = link.substring(beginPos, endPos) + appendLink;
 
     var toprocess = ['excerpt', 'more', 'content'];
     for(var i = 0; i < toprocess.length; i++){
@@ -53,8 +54,9 @@ hexo.extend.filter.register('after_post_render', function(data){
             });
             if(srcArray.length > 1)
             srcArray.shift();
-            src = srcArray.join('/');
-
+            // src = srcArray.join('/');
+            src = srcArray.pop();
+            
             $(this).attr('src', config.root + link + src);
             console.info&&console.info("update link as:-->"+config.root + link + src);
           }
